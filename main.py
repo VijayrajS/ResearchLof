@@ -9,7 +9,7 @@ def start_message():
     print('>> 3. Delete file')
 
 def main():
-    
+    # Test commit
     start_message()
 
     # HIT CTRL-C TO EXIT
