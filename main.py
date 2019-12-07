@@ -5,7 +5,7 @@ import json
 # TODO:
 # * Implement colorama for terminal interface
 
-from collections import namedtuple
+from collections import namedtuple, defaultdict
 
 # Declaring fields of a single record and a named tuple
 
@@ -23,10 +23,15 @@ def start_message():
 
 def print_json(log):
     # ['ID', 'Title', 'remarks', 'checklist', 'images', 'captions']
+    print(log)
+    log = defaultdict(int, log)
+    
     print('\nID: ' + str(log['ID']))
     # TODO: print the title in bold using colorama
     print(log['Title'])
-    print(log['remarks'])
+    
+    if log['remarks']:
+        print(log['remarks'])
     
     if log['checklist']:
         print('\n'.join('* ' + u for u in log['checklist']))
@@ -60,11 +65,14 @@ def log_edit(filename, mode):
     print('I     - Insert new note')
     print('V <n> - View note #n')
     print('E <n> - Edit note #n')
-    print('C     - Close')
+    print('C     - Close\n')
     
     while not close:
         inp = input('./Files/' + filename + '>> ').strip().split()
         
+        if not inp:
+            continue
+
         # ! Take care of insert
         if inp[0] == 'I':
             pass
@@ -80,7 +88,7 @@ def log_edit(filename, mode):
                 print('LaTEXlogError: second argument is an integer')
                 continue
             
-            if n >= len(log_json):
+            if ind >= len(log_json):
                 print('LaTEXlogError: index out of bounds')
                 continue
             
