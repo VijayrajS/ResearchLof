@@ -1,17 +1,19 @@
 import os
 import json
+from recordtype import recordtype
 
 # TODO:
 # * Implement colorama for terminal interface
 # * Display note # in prompt
 # * Delete note
 
-from collections import namedtuple , defaultdict
-
+from collections import namedtuple
+from recordtype import recordtype
 # Declaring fields of a single record and a named tuple
 
 todo_f = ['ID', 'Title', 'remarks', 'checklist', 'images', 'captions']
-L_rec = namedtuple('L_rec', todo_f)
+L_rec = recordtype('L_rec', ' '.join(todo_f))
+
 
 def start_message():
     print('\nLaTEX Research Log')
@@ -71,6 +73,9 @@ def load_file(fp, mode):
 
     return log_json, latest_index
 
+def new_json(j_index):
+    return None
+
 def log_edit(filename, mode):
 
     mode_st = 'w+' if mode == 1 else 'a+'
@@ -92,9 +97,9 @@ def log_edit(filename, mode):
             if not inp:
                 continue
 
-            # ! Take care of insert
             if inp[0] == 'I':
-                pass
+                log_json += [new_json(latest_index)]
+                latest_index += 1
 
             elif inp[0] == 'V' or inp[0] == 'E':
                 if len(inp) != 2:
