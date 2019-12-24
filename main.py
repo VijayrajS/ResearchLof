@@ -7,9 +7,8 @@ from recordtype import recordtype
 # * Display note # in prompt
 # * Delete note
 
-from collections import namedtuple
-from recordtype import recordtype
-# Declaring fields of a single record and a named tuple
+# Declaring fields of a single record and a namedtuple
+# Note: recordtype is just a mutable version of namedtuple
 
 todo_f = ['ID', 'Title', 'remarks', 'checklist', 'images', 'captions']
 L_rec = recordtype('L_rec', ' '.join(todo_f))
@@ -74,11 +73,42 @@ def load_file(fp, mode):
     return log_json, latest_index
 
 def new_json(j_index):
-    return None
+    details = [j_index]
+    title = input('>>>    Title:')
+    remarks = input('>>>    Remarks:')
+    check = []
+    images = [[],[]]
+
+    if input('>>>    Checklist? y/[n]').lower() == 'y':
+        inp = '-'
+
+        print('...    Enter all checklist contents, press a single RETURN key to terminate')
+
+        while inp != '':
+            inp = input()
+            if inp != '':
+                check.append(inp)
+
+    if input('>>>    Images? y/[n]').lower() == 'y':
+        img = ['-', '-']
+
+        print('...    Enter image name with caption')
+
+        while img != ['','']:
+            img[0] = input()
+            img[1] = input()
+            print(img)
+            if img != ['','']:
+                images[0].append(img[0])
+                images[1].append(img[1])
+
+    details += [title, remarks, check, images[0], images[1]]
+
+    return L_rec(*details)
 
 def log_edit(filename, mode):
 
-    mode_st = 'w+' if mode == 1 else 'a+'
+    mode_st = 'w+'
     print('\nOpening ' + './Files/' + filename + '...\n')
 
     with open('./Files/' + filename, mode_st) as fp:
@@ -129,6 +159,7 @@ def log_edit(filename, mode):
             else:
                 print('LaTEXlogError: Invalid input')
 
+    #! Write all JSONs into the file before closing
     fp.close()
 
 def main():
