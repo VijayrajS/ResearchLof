@@ -5,6 +5,7 @@ from recordtype import recordtype
 # TODO:
 # * Implement colorama for terminal interface
 # * Display note # in prompt
+# * Edit note
 # * Delete note
 
 # Declaring fields of a single record and a namedtuple
@@ -155,11 +156,12 @@ def log_edit(filename, mode):
             elif inp[0] == 'C':
                 print('Closing ' + filename + '...\n')
                 close = 1
+                #! Write all JSONs into the file before closing
+                fp.writelines([json.dumps(obj._asdict()) for obj in log_json])
 
             else:
                 print('LaTEXlogError: Invalid input')
 
-    #! Write all JSONs into the file before closing
     fp.close()
 
 def main():
